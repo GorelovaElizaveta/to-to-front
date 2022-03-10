@@ -4,6 +4,10 @@ body {
 
 input {
   border: 1px solid;
+}
+
+.nado{
+  width: 60%;
   padding: 10px;
 }
 
@@ -69,6 +73,7 @@ input {
   padding: 10px;
 }
 .text {
+  width: 60%;
   background-color: #fffad2;
 }
 

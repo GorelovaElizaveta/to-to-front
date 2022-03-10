@@ -69,6 +69,7 @@ const render = () => {
       inputTask.value = item.text;
       inputTask.innerText = item.text;
       intermediaresult = item.text;
+      inputTask.className = "nado";
       inputTask.addEventListener("change", taskTxt);
       container.appendChild(inputTask);
       const imgDone = document.createElement("img");
