@@ -130,8 +130,6 @@ const taskTxt = (event) => {
 const onChangChekbox = async (index) => {
   let {_id, isCheck} = allTasks[index];
   isCheck = !isCheck
-  //allTasks[index].isCheck = !allTasks[index].isCheck;
-  //const {isCheck} = allTasks[index];
   const resp = await fetch(
     `http://localhost:8000/updateTask?isCheck=${isCheck}`,
     {
