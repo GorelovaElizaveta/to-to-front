@@ -6,19 +6,19 @@ input {
   border: 1px solid;
 }
 
-.nado{
+.inputChange{
   width: 60%;
   padding: 10px;
 }
 
-.bb {
+.block {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100vw;
   }
 
-  .ogl {
+  .header {
     font-size: 37px;
     font-family: Lucida Console, Courier, monospace;
     color: black;
@@ -72,6 +72,7 @@ input {
 .newTask {
   padding: 10px;
 }
+
 .text {
   width: 60%;
   background-color: #fffad2;
@@ -79,4 +80,15 @@ input {
 
 .choose {
   background-color: aqua;
+}
+
+button{
+  width: 70px;
+height: 30px;
+font-size: 100%;
+border-color: black;
+}
+#add-task{
+  width: 50vw;
+  height: 20px;
 }

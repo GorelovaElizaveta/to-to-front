@@ -12,7 +12,7 @@ window.onload = init = async () => {
   const resp = await fetch("http://localhost:8000/allTasks", {
     method: "GET",
   });
-  let result = await resp.json();
+  const result = await resp.json();
   allTasks = result.data;
   render();
 };
@@ -30,8 +30,7 @@ const onCklickButton = async () => {
         isCheck: false,
       }),
     });
-    let result = await resp.json();
-    console.log(result);
+    const result = await resp.json();
     allTasks = result.data;
     inputValue = " ";
     input.value = " ";
@@ -58,7 +57,7 @@ const render = () => {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = item.isCheck;
-    checkbox.onchange = function () {
+    checkbox.onchange = () => {
       onChangChekbox(index);
     };
     container.appendChild(checkbox);
@@ -69,14 +68,14 @@ const render = () => {
       inputTask.value = item.text;
       inputTask.innerText = item.text;
       intermediaresult = item.text;
-      inputTask.className = "nado";
+      inputTask.className = "inputChange";
       inputTask.addEventListener("change", taskTxt);
       container.appendChild(inputTask);
       const imgDone = document.createElement("img");
       const imgBack = document.createElement("img");
       imgDone.src = "done.png";
       imgBack.src = "back.jpg";
-      imgDone.onclick = function () {
+      imgDone.onclick = () => {
         doneTask(index);
       };
 
