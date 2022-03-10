@@ -1,9 +1,7 @@
 let allTasks = [];
 let inputValue = "";
-
 let input = null;
 let editTask = -1;
-let val = "";
 let intermediaresult = "";
 
 window.onload = init = async () => {
@@ -18,6 +16,9 @@ window.onload = init = async () => {
 };
 
 const onCklickButton = async () => {
+  if(editTask >= 0){
+    alert("Сперва надо закончить редактирование задачи")
+  } else {
   if (inputValue.trim()) {
     const resp = await fetch("http://localhost:8000/createTask", {
       method: "POST",
@@ -38,6 +39,7 @@ const onCklickButton = async () => {
   } else {
     alert("Поле не заполнено!");
   }
+};
 };
 
 const updateValue = (event) => {
@@ -96,7 +98,7 @@ const render = () => {
 
       const imgDelete = document.createElement("img");
       imgDelete.src = "close.jpg";
-      imgDelete.onclick = function () {
+      imgDelete.onclick = () => {
         delTask(index);
       };
 
@@ -104,36 +106,34 @@ const render = () => {
       if (!item.isCheck) {
         const imgEdit = document.createElement("img");
         imgEdit.src = "edit.png";
-        imgEdit.onclick = function () {
+        imgEdit.onclick = () => {
           editTask = index;
           render();
         };
         container.appendChild(imgEdit);
-
       }
     }
-
     content.appendChild(container);
   });
 };
 
 const backTask = () => {
-  editTask = "";
-  console.log("editTask is empty");
+  editTask = "-1";
   render();
 };
 
 const taskTxt = (event) => {
   intermediaresult = event.target.value;
-  intermediaresult.trim(" ")
+  intermediaresult.trim(" ");
 };
 
 const onChangChekbox = async (index) => {
-  const id = allTasks[index]._id;
-  allTasks[index].isCheck = !allTasks[index].isCheck;
-  const check = allTasks[index].isCheck;
+  let {_id, isCheck} = allTasks[index];
+  isCheck = !isCheck
+  //allTasks[index].isCheck = !allTasks[index].isCheck;
+  //const {isCheck} = allTasks[index];
   const resp = await fetch(
-    `http://localhost:8000/updateTask?isCheck=${check}`,
+    `http://localhost:8000/updateTask?isCheck=${isCheck}`,
     {
       method: "PATCH",
       headers: {
@@ -141,13 +141,12 @@ const onChangChekbox = async (index) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        _id: id,
-        isCheck: check,
+        _id ,
+        isCheck,
       }),
     }
   );
-  let result = await resp.json();
-  console.log(result);
+  const result = await resp.json();
   allTasks = result.data;
   render();
 };
@@ -157,52 +156,49 @@ const delTask = async (index) => {
   const resp = await fetch(`http://localhost:8000/deleteTask?id=${_id}`, {
     method: "DELETE",
   });
-  let result = await resp.json();
-  console.log(result);
+  const result = await resp.json();
   allTasks = result.data;
   render();
 };
 
 const doneTask = async (index) => {
-  if(!(intermediaresult === "")){
-  const id = allTasks[index]._id;
-  const resp = await fetch(
-    `http://localhost:8000/updateTask?text=${intermediaresult}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        _id: id,
-        text: intermediaresult,
-      }),
-    }
-  );
-  let result = await resp.json();
-  console.log(result);
-  allTasks = result.data;
-
-  editTask = -1;
-  render();
-  } else{
-    alert("Введите значение!!!")
+  if (!(intermediaresult === "")) {
+  let {_id} = allTasks[index];
+    const resp = await fetch(
+      `http://localhost:8000/updateTask?text=${intermediaresult}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          _id ,
+          text: intermediaresult,
+        }),
+      }
+    );
+    const result = await resp.json();
+    allTasks = result.data;
+    editTask = -1;
+    render();
+  } else {
+    alert("Введите значение!!!");
   }
 };
 
-const delButton = async () => {
+const deleteAllTasks = async () => {
+  if(editTask >= 0){
+    alert("Сперва надо закончить редактирование задачи")
+  } else {
   allTasks = [];
-  editTask = -1;
-  const resp = await fetch(
-    `http://localhost:8000/deleteAll`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-    }
-  );
+  const resp = await fetch(`http://localhost:8000/deleteAll`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
   render();
+};
 };
